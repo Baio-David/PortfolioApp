@@ -398,7 +398,7 @@
                 <TabItem.Header>
                     <DockPanel HorizontalAlignment="Left">
                         <Image DockPanel.Dock="Left" Source="icon/icons8-Resume.png" Width="24" Height="24" HorizontalAlignment="left"/>
-                        <TextBlock  DockPanel.Dock="Left" Text="Curriculum Vitae" HorizontalAlignment="left" VerticalAlignment="Center" Margin="6,0,6,0"/>
+                        <TextBlock  DockPanel.Dock="Left" Text="Curriculum Vitae" FontSize="14" HorizontalAlignment="left" VerticalAlignment="Center" Margin="6,0,6,0"/>
                         <Button DockPanel.Dock="Right" Background="Transparent" BorderBrush="Transparent" Click="OpenSecondaryCVNavPaneButton_Click">
                             <Image x:Name="OpenCvSecondaryPaneButtonIcon" Source="icon/icons8-Forward.png" Width="16" Height="16"/>
                             <Button.Style>
@@ -475,7 +475,7 @@
             </TabItem>
             <TabItem x:Name="TabItemProjects" Background="#00000000" BorderBrush="Transparent" HorizontalAlignment="Left" Width="181">
                 <TabItem.Header>
-                    <TextBlock Text="Projets" HorizontalAlignment="left"/>
+                    <TextBlock Text="Projets" FontSize="14" HorizontalAlignment="left"/>
                 </TabItem.Header>
             </TabItem>
         </TabControl>
