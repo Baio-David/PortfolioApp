@@ -1,0 +1,810 @@
+﻿<Window x:Class="Portfolio.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Portfolio" Height="630" Width="830" 
+        MinHeight="26.5" MinWidth="186"
+		Background="#9Affffff"
+		AllowsTransparency="True"
+        BorderThickness="1"
+        BorderBrush="#FF0078D7"
+		WindowStyle="None"
+        SizeChanged="Window_SizeChanged"
+		WindowStartupLocation="CenterScreen"
+		Loaded="Window_Loaded">
+
+    <Window.Resources>
+        <Color x:Key="ControlCloseNormalColor">#FFFFFFFF</Color>
+        <Color x:Key="ControlCloseMouseOverColor">#FFE31123</Color>
+        <Color x:Key="ControlClosePressedColor">#AAE81123</Color>
+
+        <Color x:Key="ControlNormalColor">#FFFFFFFF</Color>
+        <Color x:Key="ControlMouseOverColor">#11000000</Color>
+        <Color x:Key="ControlPressedColor">#33000000</Color>
+
+        <Color x:Key="DisabledControlColor">#FF0078D7</Color>
+        <Color x:Key="DisabledForegroundColor">#FFFFFFFF</Color>
+
+        <Color x:Key="ButtonNormalColor">#00FFFFFF</Color>
+        <Color x:Key="ButtonBorderMouseOverColor">#a9ca5010</Color>
+        <Color x:Key="ButtonPressedColor">#a9f7630c</Color>
+        <Color x:Key="ButtonTextDisableColor">#FF7A7A7A</Color>
+
+        <Color x:Key="NavPaneButtonNormal">#00FFFFFF</Color>
+        <Color x:Key="NavPaneButtonMouseOver">#33000000</Color>
+        <Color x:Key="NavPaneButtonPressed">#66000000</Color>
+
+        <Style TargetType="{x:Type TabItem}">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type TabItem}">
+                        <Grid>
+                            <Border 
+                                Name="Border"
+                                Margin="-2,0,0,0" 
+                                Background="Transparent"
+                                BorderBrush="Transparent" 
+                                BorderThickness="1,1,1,1" >
+                                <ContentPresenter x:Name="ContentSite"
+                                    VerticalAlignment="Center"
+                                    HorizontalAlignment="Center"
+                                    ContentSource="Header"
+                                    Margin="12,10,12,10"
+                                    RecognizesAccessKey="True"/>
+                            </Border>
+                        </Grid>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsSelected" Value="True">
+                                <Setter Property="Panel.ZIndex" Value="100" />
+                                <Setter TargetName="Border" Property="Background" Value="Transparent" />
+                                <Setter TargetName="Border" Property="BorderThickness" Value="4,0,0,0" />
+                                <Setter TargetName="Border" Property="BorderBrush" Value="#FF0078D7"/>
+                            </Trigger>
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter TargetName="Border" Property="Background" Value="Transparent" />
+                                <Setter TargetName="Border" Property="BorderBrush" Value="Transparent" />
+                                <Setter Property="Foreground" Value="Transparent" />
+                            </Trigger>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="Border" Property="Background" Value="#11000000"/>
+                            </Trigger>
+                            <Trigger Property="IsMouseOver" Value="False">
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+
+        </Style>
+        <SolidColorBrush x:Key="ProgressBar.Progress" Color="#FF06B025"/>
+        <SolidColorBrush x:Key="ProgressBar.Background" Color="#FFE6E6E6"/>
+        <SolidColorBrush x:Key="ProgressBar.Border" Color="#FFBCBCBC"/>
+        <Style x:Key="ProgressBarStyle1" TargetType="{x:Type ProgressBar}">
+            <Setter Property="Foreground" Value="{StaticResource ProgressBar.Progress}"/>
+            <Setter Property="Background" Value="{StaticResource ProgressBar.Background}"/>
+            <Setter Property="BorderBrush" Value="{StaticResource ProgressBar.Border}"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type ProgressBar}">
+                        <Grid x:Name="TemplateRoot">
+                            <VisualStateManager.VisualStateGroups>
+                                <VisualStateGroup x:Name="CommonStates">
+                                    <VisualState x:Name="Determinate"/>
+                                    <VisualState x:Name="Indeterminate">
+                                        <Storyboard RepeatBehavior="Forever">
+                                            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[0].(ScaleTransform.ScaleX)" Storyboard.TargetName="Animation">
+                                                <EasingDoubleKeyFrame KeyTime="0" Value="0.25"/>
+                                                <EasingDoubleKeyFrame KeyTime="0:0:1" Value="0.25"/>
+                                                <EasingDoubleKeyFrame KeyTime="0:0:2" Value="0.25"/>
+                                            </DoubleAnimationUsingKeyFrames>
+                                            <PointAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.RenderTransformOrigin)" Storyboard.TargetName="Animation">
+                                                <EasingPointKeyFrame KeyTime="0" Value="-0.5,0.5"/>
+                                                <EasingPointKeyFrame KeyTime="0:0:1" Value="0.5,0.5"/>
+                                                <EasingPointKeyFrame KeyTime="0:0:2" Value="1.5,0.5"/>
+                                            </PointAnimationUsingKeyFrames>
+                                        </Storyboard>
+                                    </VisualState>
+                                </VisualStateGroup>
+                            </VisualStateManager.VisualStateGroups>
+                            <Border BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}"/>
+                            <Rectangle x:Name="PART_Track"/>
+                            <Grid x:Name="PART_Indicator" ClipToBounds="true" HorizontalAlignment="Left">
+                                <Rectangle x:Name="Indicator" Fill="{TemplateBinding Foreground}" RadiusX="20" RadiusY="20"/>
+                                <Rectangle x:Name="Animation" Fill="{TemplateBinding Foreground}" RenderTransformOrigin="0.5,0.5" RadiusX="20" RadiusY="20">
+                                    <Rectangle.RenderTransform>
+                                        <TransformGroup>
+                                            <ScaleTransform/>
+                                            <SkewTransform/>
+                                            <RotateTransform/>
+                                            <TranslateTransform/>
+                                        </TransformGroup>
+                                    </Rectangle.RenderTransform>
+                                </Rectangle>
+                            </Grid>
+                        </Grid>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="Orientation" Value="Vertical">
+                                <Setter Property="LayoutTransform" TargetName="TemplateRoot">
+                                    <Setter.Value>
+                                        <RotateTransform Angle="-90"/>
+                                    </Setter.Value>
+                                </Setter>
+                            </Trigger>
+                            <Trigger Property="IsIndeterminate" Value="true">
+                                <Setter Property="Visibility" TargetName="Indicator" Value="Collapsed"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+    </Window.Resources>
+
+
+    <Grid x:Name="RootGrid">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="25"/>
+            <RowDefinition Height="22*"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="184"/>
+            <ColumnDefinition Width="0" x:Name="RootGridSecondaryPaneCol"/>
+            <ColumnDefinition Width="459*" x:Name="MainPaneColumn"/>
+        </Grid.ColumnDefinitions>
+
+
+        <Rectangle x:Name="AppBarSecondaryNavPane" Grid.Column="1" Grid.Row="0" Fill="#4DFFFFFF" Width="0" HorizontalAlignment="Left" VerticalAlignment="Stretch"/>
+        <DockPanel Grid.Column="2" Grid.Row="0" Background="#FFFFFFFF" MouseDown="TitleBar_MouseDown" Grid.ColumnSpan="2" >
+            <Button x:Name="CloseButton" DockPanel.Dock="Right" Background="Transparent" BorderBrush="Transparent" Click="CloseButton_Click" Width="35">
+                <Canvas>
+                    <Line Stroke="Black" X1="-5" X2="5" Y1="-5"  Y2="5" StrokeThickness="1"/>
+                    <Line Stroke="Black" X1="-5" X2="5" Y1="5"  Y2="-5" StrokeThickness="1"/>
+                </Canvas>
+                <Button.Style>
+                    <Style TargetType="Button">
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="Button">
+                                    <Border TextBlock.Foreground="{TemplateBinding Foreground}" x:Name="Border">
+                                        <Border.Background>
+                                            <SolidColorBrush>
+                                                <SolidColorBrush.Color>
+                                                    <Color A="0" R="0" G="0" B="0"/>
+                                                </SolidColorBrush.Color>
+                                            </SolidColorBrush>
+                                        </Border.Background>
+
+                                        <VisualStateManager.VisualStateGroups>
+                                            <VisualStateGroup x:Name="CommonStates">
+                                                <VisualStateGroup.Transitions>
+                                                    <VisualTransition GeneratedDuration="0:0:0" />
+                                                    <VisualTransition GeneratedDuration="0" To="Pressed" />
+                                                </VisualStateGroup.Transitions>
+
+                                                <VisualState x:Name="Normal" />
+
+                                                <VisualState x:Name="MouseOver">
+                                                    <Storyboard>
+                                                        <ColorAnimationUsingKeyFrames Storyboard.TargetProperty="(Panel.Background).(SolidColorBrush.Color)"
+                                                                            Storyboard.TargetName="Border">
+                                                            <EasingColorKeyFrame KeyTime="0" Value="{StaticResource ControlCloseMouseOverColor}" />
+                                                        </ColorAnimationUsingKeyFrames>
+                                                    </Storyboard>
+                                                </VisualState>
+
+                                                <VisualState x:Name="Pressed">
+                                                    <Storyboard>
+                                                        <ColorAnimationUsingKeyFrames Storyboard.TargetProperty="(Panel.Background).(SolidColorBrush.Color)"
+                                                                            Storyboard.TargetName="Border">
+                                                            <EasingColorKeyFrame KeyTime="0" Value="{StaticResource ControlClosePressedColor}" />
+                                                        </ColorAnimationUsingKeyFrames>
+                                                    </Storyboard>
+                                                </VisualState>
+
+                                                <VisualState x:Name="Disabled">
+                                                    <Storyboard>
+                                                        <ColorAnimationUsingKeyFrames Storyboard.TargetProperty="(Panel.Background).(SolidColorBrush.Color)"
+                                                                            Storyboard.TargetName="Border">
+                                                            <EasingColorKeyFrame KeyTime="0" Value="{StaticResource DisabledControlColor}" />
+                                                        </ColorAnimationUsingKeyFrames>
+                                                        <ColorAnimationUsingKeyFrames Storyboard.TargetProperty="(TextBlock.Foreground).(SolidColorBrush.Color)"
+                                                                            Storyboard.TargetName="Border">
+                                                            <EasingColorKeyFrame KeyTime="0" Value="{StaticResource DisabledForegroundColor}" />
+                                                        </ColorAnimationUsingKeyFrames>
+                                                    </Storyboard>
+                                                </VisualState>
+
+                                            </VisualStateGroup>
+                                        </VisualStateManager.VisualStateGroups>
+
+                                        <ContentPresenter Margin="2"
+                                                                                    HorizontalAlignment="Center"
+                                                                                    VerticalAlignment="Center"
+                                                                                    RecognizesAccessKey="True" />
+                                    </Border>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+                </Button.Style>
+            </Button>
+            <Button x:Name="MaximizeButton" DockPanel.Dock="Right" Background="Transparent" BorderBrush="Transparent" Click="MaximizeButton_Click" Width="35" Visibility="Collapsed">
+                <Canvas>
+                    <Line Stroke="Black" X1="-5" X2="-5" Y1="-5"  Y2="5" StrokeThickness="1"/>
+                    <Line Stroke="Black" X1="5" X2="5" Y1="5"  Y2="-5" StrokeThickness="1"/>
+                    <Line Stroke="Black" X1="-5.5" X2="5.5" Y1="-5"  Y2="-5" StrokeThickness="1"/>
+                    <Line Stroke="Black" X1="-5.5" X2="5.5" Y1="5"  Y2="5" StrokeThickness="1"/>
+                </Canvas>
+                <Button.Style>
+                    <Style TargetType="Button">
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="Button">
+                                    <Border TextBlock.Foreground="{TemplateBinding Foreground}" x:Name="Border">
+                                        <Border.Background>
+                                            <SolidColorBrush>
+                                                <SolidColorBrush.Color>
+                                                    <Color A="0" R="0" G="0" B="0"/>
+                                                </SolidColorBrush.Color>
+                                            </SolidColorBrush>
+                                        </Border.Background>
+
+                                        <VisualStateManager.VisualStateGroups>
+                                            <VisualStateGroup x:Name="CommonStates">
+                                                <VisualStateGroup.Transitions>
+                                                    <VisualTransition GeneratedDuration="0:0:0" />
+                                                    <VisualTransition GeneratedDuration="0" To="Pressed" />
+                                                </VisualStateGroup.Transitions>
+
+                                                <VisualState x:Name="Normal" />
+
+                                                <VisualState x:Name="MouseOver">
+                                                    <Storyboard>
+                                                        <ColorAnimationUsingKeyFrames Storyboard.TargetProperty="(Panel.Background).(SolidColorBrush.Color)"
+                                                                            Storyboard.TargetName="Border">
+                                                            <EasingColorKeyFrame KeyTime="0" Value="{StaticResource ControlMouseOverColor}" />
+                                                        </ColorAnimationUsingKeyFrames>
+                                                    </Storyboard>
+                                                </VisualState>
+
+                                                <VisualState x:Name="Pressed">
+                                                    <Storyboard>
+                                                        <ColorAnimationUsingKeyFrames Storyboard.TargetProperty="(Panel.Background).(SolidColorBrush.Color)"
+                                                                            Storyboard.TargetName="Border">
+                                                            <EasingColorKeyFrame KeyTime="0" Value="{StaticResource ControlPressedColor}" />
+                                                        </ColorAnimationUsingKeyFrames>
+                                                    </Storyboard>
+                                                </VisualState>
+
+                                                <VisualState x:Name="Disabled">
+                                                    <Storyboard>
+                                                        <ColorAnimationUsingKeyFrames Storyboard.TargetProperty="(Panel.Background).(SolidColorBrush.Color)"
+                                                                            Storyboard.TargetName="Border">
+                                                            <EasingColorKeyFrame KeyTime="0" Value="{StaticResource DisabledControlColor}" />
+                                                        </ColorAnimationUsingKeyFrames>
+                                                        <ColorAnimationUsingKeyFrames Storyboard.TargetProperty="(TextBlock.Foreground).(SolidColorBrush.Color)"
+                                                                            Storyboard.TargetName="Border">
+                                                            <EasingColorKeyFrame KeyTime="0" Value="{StaticResource DisabledForegroundColor}" />
+                                                        </ColorAnimationUsingKeyFrames>
+                                                    </Storyboard>
+                                                </VisualState>
+
+                                            </VisualStateGroup>
+                                        </VisualStateManager.VisualStateGroups>
+
+                                        <ContentPresenter Margin="2"
+                                                                                    HorizontalAlignment="Center"
+                                                                                    VerticalAlignment="Center"
+                                                                                    RecognizesAccessKey="True" />
+                                    </Border>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+                </Button.Style>
+            </Button>
+            <Button x:Name="MinimizeButton" DockPanel.Dock="Right" Background="Transparent" BorderBrush="Transparent" Click="MinimizeButton_Click" Width="35">
+                <Canvas>
+                    <Line Stroke="Black" X1="-7" X2="7" StrokeThickness="1"/>
+                </Canvas>
+                <Button.Style>
+                    <Style TargetType="Button">
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="Button">
+                                    <Border TextBlock.Foreground="{TemplateBinding Foreground}" x:Name="Border">
+                                        <Border.Background>
+                                            <SolidColorBrush>
+                                                <SolidColorBrush.Color>
+                                                    <Color A="0" R="0" G="0" B="0"/>
+                                                </SolidColorBrush.Color>
+                                            </SolidColorBrush>
+                                        </Border.Background>
+
+                                        <VisualStateManager.VisualStateGroups>
+                                            <VisualStateGroup x:Name="CommonStates">
+                                                <VisualStateGroup.Transitions>
+                                                    <VisualTransition GeneratedDuration="0:0:0" />
+                                                    <VisualTransition GeneratedDuration="0" To="Pressed" />
+                                                </VisualStateGroup.Transitions>
+
+                                                <VisualState x:Name="Normal" />
+
+                                                <VisualState x:Name="MouseOver">
+                                                    <Storyboard>
+                                                        <ColorAnimationUsingKeyFrames Storyboard.TargetProperty="(Panel.Background).(SolidColorBrush.Color)"
+                                                                            Storyboard.TargetName="Border">
+                                                            <EasingColorKeyFrame KeyTime="0" Value="{StaticResource ControlMouseOverColor}" />
+                                                        </ColorAnimationUsingKeyFrames>
+                                                    </Storyboard>
+                                                </VisualState>
+
+                                                <VisualState x:Name="Pressed">
+                                                    <Storyboard>
+                                                        <ColorAnimationUsingKeyFrames Storyboard.TargetProperty="(Panel.Background).(SolidColorBrush.Color)"
+                                                                            Storyboard.TargetName="Border">
+                                                            <EasingColorKeyFrame KeyTime="0" Value="{StaticResource ControlPressedColor}" />
+                                                        </ColorAnimationUsingKeyFrames>
+                                                    </Storyboard>
+                                                </VisualState>
+
+                                                <VisualState x:Name="Disabled">
+                                                    <Storyboard>
+                                                        <ColorAnimationUsingKeyFrames Storyboard.TargetProperty="(Panel.Background).(SolidColorBrush.Color)"
+                                                                            Storyboard.TargetName="Border">
+                                                            <EasingColorKeyFrame KeyTime="0" Value="{StaticResource DisabledControlColor}" />
+                                                        </ColorAnimationUsingKeyFrames>
+                                                        <ColorAnimationUsingKeyFrames Storyboard.TargetProperty="(TextBlock.Foreground).(SolidColorBrush.Color)"
+                                                                            Storyboard.TargetName="Border">
+                                                            <EasingColorKeyFrame KeyTime="0" Value="{StaticResource DisabledForegroundColor}" />
+                                                        </ColorAnimationUsingKeyFrames>
+                                                    </Storyboard>
+                                                </VisualState>
+
+                                            </VisualStateGroup>
+                                        </VisualStateManager.VisualStateGroups>
+
+                                        <ContentPresenter Margin="2"
+                                                                                    HorizontalAlignment="Center"
+                                                                                    VerticalAlignment="Center"
+                                                                                    RecognizesAccessKey="True" />
+                                    </Border>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+                </Button.Style>
+            </Button>
+            <TextBlock HorizontalAlignment="Left" 
+                       VerticalAlignment="Center"
+                       Foreground="Black"
+                       FontSize="14"
+                       Margin="10,0,0,0">
+                Portfolio
+            </TextBlock>
+        </DockPanel>
+        <Rectangle Grid.Column="2" Grid.Row="1" Fill="#FFFFFFFF" />
+        <TabControl Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="3" 
+                    HorizontalAlignment="Stretch" VerticalAlignment="Stretch" 
+                    TabStripPlacement="Left" 
+                    BorderBrush="Transparent"
+                    ClipToBounds="True"
+                    Background="Transparent"
+
+                    SelectionChanged="TabControl_SelectionChanged">
+            <TabItem x:Name="TabItemCV" Background="#00000000" BorderBrush="Transparent" Width="181">
+                <TabItem.Header>
+                    <DockPanel HorizontalAlignment="Left">
+                        <Image DockPanel.Dock="Left" Source="icon/icons8-Resume.png" Width="24" Height="24" HorizontalAlignment="left"/>
+                        <TextBlock  DockPanel.Dock="Left" Text="Curriculum Vitae" HorizontalAlignment="left" VerticalAlignment="Center" Margin="6,0,6,0"/>
+                        <Button DockPanel.Dock="Right" Background="Transparent" BorderBrush="Transparent" Click="OpenSecondaryCVNavPaneButton_Click">
+                            <Image x:Name="OpenCvSecondaryPaneButtonIcon" Source="icon/icons8-Forward.png" Width="16" Height="16"/>
+                            <Button.Style>
+                                <Style TargetType="Button">
+                                    <Setter Property="Template">
+                                        <Setter.Value>
+                                            <ControlTemplate TargetType="Button">
+                                                <Border TextBlock.Foreground="{TemplateBinding Foreground}" x:Name="Border">
+                                                    <Border.Background>
+                                                        <SolidColorBrush>
+                                                            <SolidColorBrush.Color>
+                                                                <Color A="0" R="0" G="0" B="0"/>
+                                                            </SolidColorBrush.Color>
+                                                        </SolidColorBrush>
+                                                    </Border.Background>
+
+                                                    <VisualStateManager.VisualStateGroups>
+                                                        <VisualStateGroup x:Name="CommonStates">
+                                                            <VisualStateGroup.Transitions>
+                                                                <VisualTransition GeneratedDuration="0:0:0.5" />
+                                                                <VisualTransition GeneratedDuration="0" To="Pressed" />
+                                                            </VisualStateGroup.Transitions>
+
+                                                            <VisualState x:Name="Normal" />
+
+                                                            <VisualState x:Name="MouseOver">
+                                                                <Storyboard>
+                                                                    <ColorAnimationUsingKeyFrames Storyboard.TargetProperty="(Panel.Background).(SolidColorBrush.Color)"
+                                                Storyboard.TargetName="Border">
+                                                                        <EasingColorKeyFrame KeyTime="0" Value="{StaticResource NavPaneButtonMouseOver}" />
+                                                                    </ColorAnimationUsingKeyFrames>
+                                                                </Storyboard>
+                                                            </VisualState>
+
+                                                            <VisualState x:Name="Pressed">
+                                                                <Storyboard>
+                                                                    <ColorAnimationUsingKeyFrames Storyboard.TargetProperty="(Panel.Background).(SolidColorBrush.Color)"
+                                                Storyboard.TargetName="Border">
+                                                                        <EasingColorKeyFrame KeyTime="0" Value="{StaticResource NavPaneButtonPressed}" />
+                                                                    </ColorAnimationUsingKeyFrames>
+                                                                </Storyboard>
+                                                            </VisualState>
+
+                                                            <VisualState x:Name="Disabled">
+                                                                <Storyboard>
+                                                                    <ColorAnimationUsingKeyFrames Storyboard.TargetProperty="(Panel.Background).(SolidColorBrush.Color)"
+                                                Storyboard.TargetName="Border">
+                                                                        <EasingColorKeyFrame KeyTime="0" Value="{StaticResource DisabledControlColor}" />
+                                                                    </ColorAnimationUsingKeyFrames>
+                                                                    <ColorAnimationUsingKeyFrames Storyboard.TargetProperty="(TextBlock.Foreground).(SolidColorBrush.Color)"
+                                                Storyboard.TargetName="Border">
+                                                                        <EasingColorKeyFrame KeyTime="0" Value="{StaticResource DisabledForegroundColor}" />
+                                                                    </ColorAnimationUsingKeyFrames>
+                                                                </Storyboard>
+                                                            </VisualState>
+
+                                                        </VisualStateGroup>
+                                                    </VisualStateManager.VisualStateGroups>
+
+                                                    <ContentPresenter Margin="2"
+                                                        HorizontalAlignment="Center"
+                                                        VerticalAlignment="Center"
+                                                        RecognizesAccessKey="True" />
+                                                </Border>
+                                            </ControlTemplate>
+                                        </Setter.Value>
+                                    </Setter>
+                                </Style>
+                            </Button.Style>
+                        </Button>
+                    </DockPanel>
+                </TabItem.Header>
+                <ScrollViewer x:Name="CvScrollViewer" Margin="-2,-3,0,-2" VerticalScrollBarVisibility="Visible">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="58*"/>
+                            <RowDefinition Height="253*"/>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="0" x:Name="SecondaryNavPaneColumn"/>
+                            <ColumnDefinition Width="313*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <StackPanel Orientation="Vertical" Grid.Column="1" Grid.Row="0">
+                            <!--NOM PRENOM-->
+                            <StackPanel Orientation="Vertical" Grid.Column="1" Grid.Row="0" Background="#11000000" Margin="10,10,10,0" Height="100" VerticalAlignment="Top" Grid.ColumnSpan="2">
+                                <TextBlock FontFamily="Segoe UI Light" FontSize="35" Margin="5,5,5,0">
+                                        David Baio
+                                </TextBlock>
+                                <TextBlock FontFamily="Segoe UI Semilight" FontSize="18" Margin="5,0,5,0">
+                                        DESCRIPTION
+                                </TextBlock>
+                                <DockPanel Margin="5,0,5,5">
+                                    <TextBlock FontFamily="Segoe UI" FontSize="14" VerticalAlignment="Center" DockPanel.Dock="Left" HorizontalAlignment="Left" Margin="0,5,5,0">
+                                        david.baio.pro@gmail.com
+                                    </TextBlock>
+                                    <TextBlock FontFamily="Segoe UI" FontSize="14" VerticalAlignment="Center" DockPanel.Dock="Left" HorizontalAlignment="Center" Margin="5,5,5,0">
+                                        166 bld de la Croix-Rousse, 69001 Lyon
+                                    </TextBlock>
+                                    <TextBlock FontFamily="Segoe UI" FontSize="14" VerticalAlignment="Center" DockPanel.Dock="Left" HorizontalAlignment="Right" Margin="5,5,5,0">
+                                        +33 6 88 15 30 12
+                                    </TextBlock>
+                                </DockPanel>
+                            </StackPanel>
+
+                            <!--LANGAGES ET BUREAUTIQUE-->
+                            <DockPanel Margin="0,10,0,5">
+                                <!--LANGAGES-->
+                                <StackPanel Orientation="Vertical" Grid.Column="1" Grid.Row="1" Background="#11000000" Margin="10,0,5,0" VerticalAlignment="Top" HorizontalAlignment="Stretch">
+                                    <!--HEADER-->
+                                    <DockPanel Margin="5,0,5,0">
+                                        <Image Source="icon/icons8-Code.png" Height="24" VerticalAlignment="Center" />
+                                        <TextBlock FontFamily="Segoe UI Light" FontSize="24" Margin="5,5,5,5" VerticalAlignment="Center" >
+                                    Langages Informatiques
+                                        </TextBlock>
+                                    </DockPanel>
+
+                                    <!--CONTENT-->
+                                    <StackPanel Orientation="Vertical" Margin="5,0,5,5">
+                                        <DockPanel>
+                                            <TextBlock FontFamily="Segoe UI Semilight" FontSize="18" VerticalAlignment="Center">C++</TextBlock>
+                                            <ProgressBar x:Name="CppProgressbar" HorizontalAlignment="Right" VerticalAlignment="Center" Width="200" Height="7" Margin="10,0,10,0" BorderThickness="0" Background="#33000000" Foreground="#FF0078D7"/>
+                                        </DockPanel>
+                                        <DockPanel>
+                                            <TextBlock FontFamily="Segoe UI Semilight" FontSize="18" VerticalAlignment="Center">C</TextBlock>
+                                            <ProgressBar x:Name="CProgressbar" HorizontalAlignment="Right" VerticalAlignment="Center" Width="200" Height="7" Margin="10,0,10,0" BorderThickness="0" Background="#33000000" Foreground="#FF0078D7"/>
+                                        </DockPanel>
+                                        <DockPanel>
+                                            <TextBlock FontFamily="Segoe UI Semilight" FontSize="18" VerticalAlignment="Center">C#</TextBlock>
+                                            <ProgressBar x:Name="CsProgressbar" HorizontalAlignment="Right" VerticalAlignment="Center" Width="200" Height="7" Margin="10,0,10,0" BorderThickness="0" Background="#33000000" Foreground="#FF0078D7"/>
+                                        </DockPanel>
+                                        <DockPanel>
+                                            <TextBlock FontFamily="Segoe UI Semilight" FontSize="18" VerticalAlignment="Center">Matlab</TextBlock>
+                                            <ProgressBar x:Name="MatlabProgressbar" HorizontalAlignment="Right" VerticalAlignment="Center" Width="200" Height="7" Margin="10,0,10,0" BorderThickness="0" Background="#33000000" Foreground="#FF0078D7"/>
+                                        </DockPanel>
+                                        <DockPanel>
+                                            <TextBlock FontFamily="Segoe UI Semilight" FontSize="18" VerticalAlignment="Center">Perl</TextBlock>
+                                            <ProgressBar x:Name="PerlProgressbar" HorizontalAlignment="Right" VerticalAlignment="Center" Width="200" Height="7" Margin="10,0,10,0" BorderThickness="0" Background="#33000000" Foreground="#FF0078D7"/>
+                                        </DockPanel>
+                                        <DockPanel>
+                                            <TextBlock FontFamily="Segoe UI Semilight" FontSize="18" VerticalAlignment="Center">Java</TextBlock>
+                                            <ProgressBar x:Name="JavaProgressbar" HorizontalAlignment="Right" VerticalAlignment="Center" Width="200" Height="7" Margin="10,0,10,0" BorderThickness="0" Background="#33000000" Foreground="#FF0078D7"/>
+                                        </DockPanel>
+                                        <DockPanel>
+                                            <TextBlock FontFamily="Segoe UI Semilight" FontSize="18" VerticalAlignment="Center">VBA</TextBlock>
+                                            <ProgressBar x:Name="VbaProgressbar" HorizontalAlignment="Right" VerticalAlignment="Center" Width="200" Height="7" Margin="10,0,10,0" BorderThickness="0" Background="#33000000" Foreground="#FF0078D7"/>
+                                        </DockPanel>
+                                    </StackPanel>
+                                </StackPanel>
+
+                                <!--BUREAUTIQUE-->
+                                <StackPanel Orientation="Vertical" Grid.Column="2" Grid.Row="1" Background="#11000000" Margin="5,0,10,0" VerticalAlignment="Top" HorizontalAlignment="Stretch" >
+                                    <!--HEADER-->
+                                    <DockPanel Margin="5,0,5,0">
+                                        <Image Source="icon/icons8-System Information.png" Height="24" VerticalAlignment="Center" />
+                                        <TextBlock FontFamily="Segoe UI Light" FontSize="24" Margin="5,5,5,5" VerticalAlignment="Center" >
+                                            Bureautique et autres
+                                        </TextBlock>
+                                    </DockPanel>
+
+                                    <!--CONTENT-->
+                                    <StackPanel Orientation="Vertical" Margin="5,0,5,5">
+                                        <TextBlock FontFamily="Segoe UI" FontSize="14" TextWrapping="Wrap" TextAlignment="Justify">
+                                            Windows<LineBreak/> 
+                                            Linux<LineBreak/> 
+                                            Microsoft Office<LineBreak/> 
+                                            Visual Studio<LineBreak/> 
+                                            QtCreator<LineBreak/> 
+                                            Eclipse<LineBreak/> 
+                                            Vim<LineBreak/> 
+                                            OpenGL<LineBreak/> Qt
+                                        </TextBlock>
+                                    </StackPanel>
+                                </StackPanel>
+                            </DockPanel>
+
+                            <!--LANGUES ET LOISIRS-->
+                            <DockPanel Margin="10,5,10,5">
+                                <!--LANGUES-->
+                                <StackPanel Orientation="Vertical" Background="#11000000" VerticalAlignment="Top" HorizontalAlignment="Stretch" Width="300"  Margin="0,0,5,0">
+                                    <!--HEADER-->
+                                    <DockPanel Margin="5,0,5,0">
+                                        <Image Source="icon/icons8-Language.png" Height="24" VerticalAlignment="Center" />
+                                        <TextBlock FontFamily="Segoe UI Light" FontSize="24" Margin="5,5,5,5" VerticalAlignment="Center" >
+                                    Langues
+                                        </TextBlock>
+                                    </DockPanel>
+
+                                    <!--CONTENT-->
+                                    <StackPanel Orientation="Vertical" Margin="5,0,5,5">
+                                        <DockPanel>
+                                            <TextBlock FontFamily="Segoe UI Semilight" FontSize="18" VerticalAlignment="Center">Français</TextBlock>
+                                            <TextBlock FontFamily="Segoe UI Semilight" FontSize="18" VerticalAlignment="Center" HorizontalAlignment="Right" Foreground="#FF0078D7">Langue maternelle</TextBlock>
+                                        </DockPanel>
+                                        <DockPanel>
+                                            <TextBlock FontFamily="Segoe UI Semilight" FontSize="18" VerticalAlignment="Center">Anglais</TextBlock>
+                                            <TextBlock FontFamily="Segoe UI Semilight" FontSize="18" VerticalAlignment="Center" HorizontalAlignment="Right" Foreground="#FF0078D7">C2</TextBlock>
+                                        </DockPanel>
+                                        <DockPanel>
+                                            <TextBlock FontFamily="Segoe UI Semilight" FontSize="18" VerticalAlignment="Center">Allemand</TextBlock>
+                                            <TextBlock FontFamily="Segoe UI Semilight" FontSize="18" VerticalAlignment="Center" HorizontalAlignment="Right" Foreground="#FF0078D7">B1</TextBlock>
+                                        </DockPanel>
+                                        <DockPanel>
+                                            <TextBlock FontFamily="Segoe UI Semilight" FontSize="18" VerticalAlignment="Center">Japonais</TextBlock>
+                                            <TextBlock FontFamily="Segoe UI Semilight" FontSize="18" VerticalAlignment="Center" HorizontalAlignment="Right" Foreground="#FF0078D7">A2</TextBlock>
+                                        </DockPanel>
+                                        <DockPanel>
+                                            <TextBlock FontFamily="Segoe UI Semilight" FontSize="18" VerticalAlignment="Center">Italien</TextBlock>
+                                            <TextBlock FontFamily="Segoe UI Semilight" FontSize="18" VerticalAlignment="Center" HorizontalAlignment="Right" Foreground="#FF0078D7">A1</TextBlock>
+                                        </DockPanel>
+                                    </StackPanel>
+                                </StackPanel>
+
+                                <!--LOISIRS-->
+                                <StackPanel Orientation="Vertical" Background="#11000000" VerticalAlignment="Top" HorizontalAlignment="Stretch" Margin="5,0,0,0">
+                                    <!--HEADER-->
+                                    <DockPanel Margin="5,0,5,0">
+                                        <Image Source="icon/icons8-Past.png" Height="24" VerticalAlignment="Center" />
+                                        <TextBlock FontFamily="Segoe UI Light" FontSize="24" Margin="5,5,5,5" VerticalAlignment="Center" >
+                                            Loisirs
+                                        </TextBlock>
+                                    </DockPanel>
+
+                                    <!--CONTENT-->
+                                    <StackPanel Orientation="Vertical" Margin="5,0,5,5">
+                                        <TextBlock FontFamily="Segoe UI" FontSize="16" TextWrapping="Wrap" TextAlignment="Justify">
+                                            Escalade <LineBreak/>
+                                            Culture anglo-saxone <LineBreak/>
+                                            Jeux vidéo <LineBreak/>
+                                            Cinéma et séries
+                                        </TextBlock>
+                                    </StackPanel>
+                                </StackPanel>
+                            </DockPanel>
+
+                            <!--EXPERIENCES PROFESSIONNELLES-->
+                            <StackPanel Orientation="Vertical" Background="#11000000" Margin="10,5,10,5" VerticalAlignment="Top">
+                                <!--HEADER-->
+                                <DockPanel Margin="5,0,5,0">
+                                    <Image Source="icon/icons8-Permanent Job.png" Height="24" VerticalAlignment="Center" />
+                                    <TextBlock FontFamily="Segoe UI Light" FontSize="24" Margin="5,5,5,5" VerticalAlignment="Center" >
+                                            Expériences professionnelles
+                                    </TextBlock>
+                                </DockPanel>
+
+                                <!--SOLUTEC-->
+                                <DockPanel Margin="5,0,5,0" >
+                                    <Canvas x:Name="ExSolutecCanvas" DockPanel.Dock="Left" Width="20">
+                                        <Line x:Name="Line1" X1="10" X2="10" Y1="0" Stroke="#FF0078D7" StrokeThickness="3"/>
+                                        <Ellipse Canvas.Top="5" Canvas.Left="3" Height="14" Width="14" Fill="#FF0078D7"/>
+                                    </Canvas>
+                                    <StackPanel Orientation="Vertical" Margin="5,0,5,5" DockPanel.Dock="Left">
+                                        <TextBlock FontFamily="Segoe UI Bold" FontSize="18" Foreground="#FF0078D7" TextWrapping="Wrap" TextAlignment="Justify">
+                                            2017
+                                        </TextBlock>
+                                        <TextBlock FontFamily="Segoe UI Bold" FontSize="18" Foreground="#FF000000" TextWrapping="Wrap" TextAlignment="Justify">
+                                            Solutec
+                                        </TextBlock>
+                                        <TextBlock FontFamily="Segoe UI " FontSize="14" Foreground="#FF000000" TextWrapping="Wrap" TextAlignment="Justify">
+                                            Projet de fin d'études chez Solutec Lyon. Création d'une application pour pouvoir contrôler une présentation PowerPoint grâce à
+                                            de la détection de mouvements et une caméra Kinect. L'utilisateur réalise des mouvement spécifiques chacun lié à une action,
+                                            comme par exemple passer à la diapositive suivante ou arrêter la présentation.
+                                        </TextBlock>
+                                    </StackPanel>
+                                </DockPanel>
+
+                                <!--INFINEON-->
+                                <DockPanel Margin="5,0,5,0" >
+                                    <Canvas x:Name="ExInfineonCanvas" DockPanel.Dock="Left" Width="20">
+                                        <Line x:Name="Line2" X1="10" X2="10" Y1="0" Stroke="#FF0078D7" StrokeThickness="3"/>
+                                        <Ellipse Canvas.Top="5" Canvas.Left="3" Height="14" Width="14" Fill="#FF0078D7"/>
+                                    </Canvas>
+                                    <StackPanel Orientation="Vertical" Margin="5,0,5,5" DockPanel.Dock="Left">
+                                        <TextBlock FontFamily="Segoe UI Bold" FontSize="18" Foreground="#FF0078D7" TextWrapping="Wrap" TextAlignment="Justify">
+                                            2015-2016
+                                        </TextBlock>
+                                        <TextBlock FontFamily="Segoe UI Bold" FontSize="18" Foreground="#FF000000" TextWrapping="Wrap" TextAlignment="Justify">
+                                            Infineon Technologies, AG
+                                        </TextBlock>
+                                        <TextBlock FontFamily="Segoe UI " FontSize="14" Foreground="#FF000000" TextWrapping="Wrap" TextAlignment="Justify">
+                                            Année de césure chez Infineon Technologies, AG à Neubiberg au sud de Munich en Allemagne. Optimisation d'algorithme
+                                            de test pour wafers. Création d'une interface graphique en utilisant la bibliothèque Qt pour faciliter l'utilisation
+                                            de l'algorithme pour les personnes non formées à ce programme.
+                                        </TextBlock>
+                                    </StackPanel>
+                                </DockPanel>
+
+                                <!--CARSO-->
+                                <DockPanel Margin="5,0,5,0" >
+                                    <Canvas x:Name="ExCarsoCanvas" DockPanel.Dock="Left" Width="20">
+                                        <Line x:Name="Line3" X1="10" X2="10" Y1="0" Stroke="#FF0078D7" StrokeThickness="3"/>
+                                        <Ellipse Canvas.Top="5" Canvas.Left="3" Height="14" Width="14" Fill="#FF0078D7"/>
+                                    </Canvas>
+                                    <StackPanel Orientation="Vertical" Margin="5,0,5,5" DockPanel.Dock="Left">
+                                        <TextBlock FontFamily="Segoe UI Bold" FontSize="18" Foreground="#FF0078D7" TextWrapping="Wrap" TextAlignment="Justify">
+                                            2014
+                                        </TextBlock>
+                                        <TextBlock FontFamily="Segoe UI Bold" FontSize="18" Foreground="#FF000000" TextWrapping="Wrap" TextAlignment="Justify">
+                                            Carso LSEHL
+                                        </TextBlock>
+                                        <TextBlock FontFamily="Segoe UI " FontSize="14" Foreground="#FF000000" TextWrapping="Wrap" TextAlignment="Justify">
+                                            Stage d'exécution chez Carso LSEHL dans le quartier de Gerland à Lyon. Mise à jour de bases de données Excel.
+                                            Amélioration de la navigation et de la recherche dans ces fichiers Excel grâce à la création d'une interface graphique
+                                            en VBA.
+                                        </TextBlock>
+                                    </StackPanel>
+                                </DockPanel>
+                            </StackPanel>
+
+                            <!--FORMATION-->
+                            <StackPanel Orientation="Vertical" Background="#11000000" Margin="10,5,10,5" VerticalAlignment="Top">
+                                <!--HEADER-->
+                                <DockPanel Margin="5,0,5,0">
+                                    <Image Source="icon/icons8-Classroom.png" Height="24" VerticalAlignment="Center" />
+                                    <TextBlock FontFamily="Segoe UI Light" FontSize="24" Margin="5,5,5,5" VerticalAlignment="Center" >
+                                            Formation
+                                    </TextBlock>
+                                </DockPanel>
+
+                                <!--CPE-->
+                                <DockPanel Margin="5,0,5,0" >
+                                    <Canvas x:Name="FoCPECanvas" DockPanel.Dock="Left" Width="20">
+                                        <Line x:Name="Line4" X1="10" X2="10" Y1="0" Stroke="#FF0078D7" StrokeThickness="3"/>
+                                        <Ellipse Canvas.Top="5" Canvas.Left="3" Height="14" Width="14" Fill="#FF0078D7"/>
+                                    </Canvas>
+                                    <StackPanel Orientation="Vertical" Margin="5,0,5,5" DockPanel.Dock="Left">
+                                        <TextBlock FontFamily="Segoe UI Bold" FontSize="18" Foreground="#FF0078D7" TextWrapping="Wrap" TextAlignment="Justify">
+                                            2013-2017
+                                        </TextBlock>
+                                        <TextBlock FontFamily="Segoe UI Bold" FontSize="18" Foreground="#FF000000" TextWrapping="Wrap" TextAlignment="Justify">
+                                            CPE Lyon
+                                        </TextBlock>
+                                        <TextBlock FontFamily="Segoe UI " FontSize="14" Foreground="#FF000000" TextWrapping="Wrap" TextAlignment="Justify">
+                                            Ecole d'ingénieur CPE Lyon<LineBreak/>
+                                            Filière Electronique, Télécommunication et Informatique<LineBreak/>
+                                            Majeure Imagerie et Modélisation Informatique<LineBreak/>
+                                            Diplômé d'un Bachelor
+                                        </TextBlock>
+                                    </StackPanel>
+                                </DockPanel>
+
+                                <!--PREPA CPE-->
+                                <DockPanel Margin="5,0,5,0" >
+                                    <Canvas x:Name="FoPrepCPECanvas" DockPanel.Dock="Left" Width="20">
+                                        <Line x:Name="Line5" X1="10" X2="10" Y1="0" Stroke="#FF0078D7" StrokeThickness="3"/>
+                                        <Ellipse Canvas.Top="5" Canvas.Left="3" Height="14" Width="14" Fill="#FF0078D7"/>
+                                    </Canvas>
+                                    <StackPanel Orientation="Vertical" Margin="5,0,5,5" DockPanel.Dock="Left">
+                                        <TextBlock FontFamily="Segoe UI Bold" FontSize="18" Foreground="#FF0078D7" TextWrapping="Wrap" TextAlignment="Justify">
+                                            2011-2013
+                                        </TextBlock>
+                                        <TextBlock FontFamily="Segoe UI Bold" FontSize="18" Foreground="#FF000000" TextWrapping="Wrap" TextAlignment="Justify">
+                                            Classes Préparatoires CPE Lyon
+                                        </TextBlock>
+                                        <TextBlock FontFamily="Segoe UI " FontSize="14" Foreground="#FF000000" TextWrapping="Wrap" TextAlignment="Justify">
+                                            Classes préparatoires intégrées CPE Lyon à l'institution des Chartreux
+                                        </TextBlock>
+                                    </StackPanel>
+                                </DockPanel>
+                            </StackPanel>
+                        </StackPanel>
+
+                        <!--Secondary CVNavPane-->
+                        <Rectangle x:Name="CVSecondaryNavPane" Grid.Column="0" Grid.Row="0" Fill="#4DFFFFFF" Width="0" HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="0,-3,0,-3" Grid.ColumnSpan="2" Grid.RowSpan="2"/>
+                        <StackPanel x:Name="SecondaryNavPaneStackPanel" Orientation="Vertical" Width="0" Grid.Column="0" Grid.Row="0" Grid.RowSpan="2">
+                            <Button Content="BUTTON" Background="Transparent" BorderBrush="Transparent"/>
+                        </StackPanel>
+                        <!--/Secondary CVNavPane-->
+                    </Grid>
+                </ScrollViewer>
+            </TabItem>
+            <TabItem x:Name="TabItemProjects" Background="#00000000" BorderBrush="Transparent" HorizontalAlignment="Left" Width="181">
+                <TabItem.Header>
+                    <TextBlock Text="Projets" HorizontalAlignment="left"/>
+                </TabItem.Header>
+            </TabItem>
+        </TabControl>
+
+
+
+        <!--Splashscreen-->
+        <Rectangle x:Name="SplashScreen" Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="3" Grid.RowSpan="2" Fill="#FF0078D7" Visibility="Visible"/>
+        <TextBlock x:Name="WelcomeText" Visibility="Visible"
+                   Grid.Column="1" Grid.Row="1" 
+                   Grid.ColumnSpan="2" 
+                   FontFamily="Segoe UI Light" FontSize="72" Foreground="White" 
+                   Text="Bonjour" Margin="112,91,296,412"
+                   VerticalAlignment="Center" HorizontalAlignment="Center" Height="100" Width="236"/>
+        <TextBlock x:Name="ExplanationText" Visibility="Visible"
+                   Grid.Column="0" Grid.Row="1" 
+                   Grid.ColumnSpan="3" 
+                   FontFamily="Segoe UI Light" FontSize="35" Foreground="White" 
+                   Text="Bienvenue dans l'application Portfolio" Margin="141,191,140,350"
+                   VerticalAlignment="Center" HorizontalAlignment="Center" Height="62" Width="547"/>
+        <TextBlock x:Name="ExplorationText" Visibility="Visible"
+                   Grid.Column="0" Grid.Row="1" 
+                   Grid.ColumnSpan="3" 
+                   FontFamily="Segoe UI Light" FontSize="28" Foreground="White" 
+                   Text="Nous mettons en place quelques éléments..." Margin="156,495,155,61"
+                   VerticalAlignment="Center" HorizontalAlignment="Center" Height="47" Width="517"/>
+        <ProgressBar x:Name="InderminatePB" Margin="80,361,264,226" Visibility="Visible"
+                     Grid.Column="1" Grid.Row="1" 
+                     Grid.ColumnSpan="2" 
+                     HorizontalAlignment="Center" VerticalAlignment="Center"
+                     Height="2" Width="300" Foreground="White"
+                     IsIndeterminate="True" Background="#00000000" BorderBrush="#00000000" Style="{DynamicResource ProgressBarStyle1}"/>
+        <!--/Splashscreen-->
+
+    </Grid>
+</Window>

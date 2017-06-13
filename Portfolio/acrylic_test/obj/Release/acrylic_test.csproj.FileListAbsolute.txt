@@ -1,0 +1,13 @@
+C:\Users\dbaio\Documents\Visual Studio 2013\Projects\acrylic_test\acrylic_test\bin\Release\acrylic_test.exe.config
+C:\Users\dbaio\Documents\Visual Studio 2013\Projects\acrylic_test\acrylic_test\bin\Release\acrylic_test.exe
+C:\Users\dbaio\Documents\Visual Studio 2013\Projects\acrylic_test\acrylic_test\bin\Release\acrylic_test.pdb
+C:\Users\dbaio\Documents\Visual Studio 2013\Projects\acrylic_test\acrylic_test\obj\Release\MainWindow.baml
+C:\Users\dbaio\Documents\Visual Studio 2013\Projects\acrylic_test\acrylic_test\obj\Release\MainWindow.g.cs
+C:\Users\dbaio\Documents\Visual Studio 2013\Projects\acrylic_test\acrylic_test\obj\Release\App.g.cs
+C:\Users\dbaio\Documents\Visual Studio 2013\Projects\acrylic_test\acrylic_test\obj\Release\acrylic_test_MarkupCompile.cache
+C:\Users\dbaio\Documents\Visual Studio 2013\Projects\acrylic_test\acrylic_test\obj\Release\acrylic_test.g.resources
+C:\Users\dbaio\Documents\Visual Studio 2013\Projects\acrylic_test\acrylic_test\obj\Release\acrylic_test.Properties.Resources.resources
+C:\Users\dbaio\Documents\Visual Studio 2013\Projects\acrylic_test\acrylic_test\obj\Release\acrylic_test.csproj.GenerateResource.Cache
+C:\Users\dbaio\Documents\Visual Studio 2013\Projects\acrylic_test\acrylic_test\obj\Release\acrylic_test.exe
+C:\Users\dbaio\Documents\Visual Studio 2013\Projects\acrylic_test\acrylic_test\obj\Release\acrylic_test.pdb
+C:\Users\dbaio\Documents\Visual Studio 2013\Projects\acrylic_test\acrylic_test\obj\Release\acrylic_test.csprojResolveAssemblyReference.cache
