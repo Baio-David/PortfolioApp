@@ -16,6 +16,7 @@ using System.Runtime.InteropServices;
 using System.Windows.Interop;
 using System.Windows.Media.Animation;
 using System.Threading;
+using Portfolio.Pages;
 
 namespace Portfolio
 {
@@ -76,19 +77,6 @@ namespace Portfolio
             
         }
 
-        private void InitializeLineLengthInCV()
-        {
-            Line1.Y2 = ExSolutecCanvas.ActualHeight;
-            Line2.Y2 = ExInfineonCanvas.ActualHeight;
-            Line3.Y2 = ExCarsoCanvas.ActualHeight;
-        }
-
-        private void InitializeLineLengthInEducation()
-        {
-            Line4.Y2 = FoCPECanvas.ActualHeight;
-            Line5.Y2 = FoPrepCPECanvas.ActualHeight;
-        }
-
         private void SplashScreenVisual()
         {
             var animation = new DoubleAnimation
@@ -115,15 +103,15 @@ namespace Portfolio
 
         private void Window_SizeChanged(object sender, SizeChangedEventArgs e)
         {
-            InitializeLineLengthInCV();
-            InitializeLineLengthInEducation();
+            PageCV.InitializeLineLengthInCV();
+            PageCV.InitializeLineLengthInEducation();
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             EnableBlur();
-            InitializeLineLengthInCV();
-            InitializeLineLengthInEducation();
+            PageCV.InitializeLineLengthInCV();
+            PageCV.InitializeLineLengthInEducation();
         }
 
         internal void EnableBlur()
@@ -186,25 +174,25 @@ namespace Portfolio
         {
             if (TabItemCV != null && TabItemCV.IsSelected)
             {
-                CvScrollViewer.ScrollToTop();
-                ChangeProgressBarValueOnLoad(CppProgressbar, 75);
-                ChangeProgressBarValueOnLoad(CProgressbar, 75);
-                ChangeProgressBarValueOnLoad(CsProgressbar, 50);
-                ChangeProgressBarValueOnLoad(MatlabProgressbar, 50);
-                ChangeProgressBarValueOnLoad(PerlProgressbar, 40);
-                ChangeProgressBarValueOnLoad(JavaProgressbar, 30);
-                ChangeProgressBarValueOnLoad(VbaProgressbar, 25);
+                PageCV.CvScrollViewer.ScrollToTop();
+                ChangeProgressBarValueOnLoad(PageCV.CppProgressbar, 75);
+                ChangeProgressBarValueOnLoad(PageCV.CProgressbar, 75);
+                ChangeProgressBarValueOnLoad(PageCV.CsProgressbar, 50);
+                ChangeProgressBarValueOnLoad(PageCV.MatlabProgressbar, 50);
+                ChangeProgressBarValueOnLoad(PageCV.PerlProgressbar, 40);
+                ChangeProgressBarValueOnLoad(PageCV.JavaProgressbar, 30);
+                ChangeProgressBarValueOnLoad(PageCV.VbaProgressbar, 25);
             }
             if (TabItemProjects != null && TabItemProjects.IsSelected)
             {
-                ChangeProgressBarValueOnUnload(CppProgressbar, 0);
-                ChangeProgressBarValueOnUnload(CProgressbar, 0);
-                ChangeProgressBarValueOnUnload(CsProgressbar, 0);
-                ChangeProgressBarValueOnUnload(MatlabProgressbar, 0);
-                ChangeProgressBarValueOnUnload(PerlProgressbar, 0);
-                ChangeProgressBarValueOnUnload(JavaProgressbar, 0);
-                ChangeProgressBarValueOnUnload(VbaProgressbar, 0);
-                _secondaryCvPaneOpened = CloseOpenedPanes(_secondaryCvPaneOpened, CVSecondaryNavPane, OpenCvSecondaryPaneButtonIcon, SecondaryNavPaneStackPanel);
+                ChangeProgressBarValueOnUnload(PageCV.CppProgressbar, 0);
+                ChangeProgressBarValueOnUnload(PageCV.CProgressbar, 0);
+                ChangeProgressBarValueOnUnload(PageCV.CsProgressbar, 0);
+                ChangeProgressBarValueOnUnload(PageCV.MatlabProgressbar, 0);
+                ChangeProgressBarValueOnUnload(PageCV.PerlProgressbar, 0);
+                ChangeProgressBarValueOnUnload(PageCV.JavaProgressbar, 0);
+                ChangeProgressBarValueOnUnload(PageCV.VbaProgressbar, 0);
+                _secondaryCvPaneOpened = CloseOpenedPanes(_secondaryCvPaneOpened, PageCV.CVSecondaryNavPane, OpenCvSecondaryPaneButtonIcon, PageCV.SecondaryNavPaneStackPanel);
             }
         }
 
@@ -226,7 +214,7 @@ namespace Portfolio
         {
             if (paneOpened)
             {
-                SecondaryNavPaneColumn.Width = new GridLength(0);
+                PageCV.SecondaryNavPaneColumn.Width = new GridLength(0);
                 RootGridSecondaryPaneCol.Width = new GridLength(0);
 
                 Duration duration = new Duration(TimeSpan.FromMilliseconds(100));
@@ -251,38 +239,38 @@ namespace Portfolio
             {
                 if (!_secondaryCvPaneOpened)
                 {
-                    SecondaryNavPaneColumn.Width = new GridLength(185);
+                    PageCV.SecondaryNavPaneColumn.Width = new GridLength(185);
                     RootGridSecondaryPaneCol.Width = new GridLength(185);
 
                     Duration duration = new Duration(TimeSpan.FromMilliseconds(100));
                     DoubleAnimation doubleanimation = new DoubleAnimation(185, duration);
                     DoubleAnimation windowAnimation = new DoubleAnimation(this.Width+185,duration);
 
-                    CVSecondaryNavPane.BeginAnimation(Rectangle.WidthProperty, doubleanimation);
+                    PageCV.CVSecondaryNavPane.BeginAnimation(Rectangle.WidthProperty, doubleanimation);
                     this.BeginAnimation(MainWindow.WidthProperty, windowAnimation);
                     AppBarSecondaryNavPane.BeginAnimation(Rectangle.WidthProperty, doubleanimation);
-                    SecondaryNavPaneStackPanel.BeginAnimation(StackPanel.WidthProperty, doubleanimation);
+                    PageCV.SecondaryNavPaneStackPanel.BeginAnimation(StackPanel.WidthProperty, doubleanimation);
 
                     OpenCvSecondaryPaneButtonIcon.Source = new BitmapImage(new Uri(@"icon/icons8-Back.png", UriKind.Relative));
 
-                    CvScrollViewer.ScrollToTop();
+                    PageCV.CvScrollViewer.ScrollToTop();
 
                     _secondaryCvPaneOpened = true;
 
                 }
                 else
                 {
-                    SecondaryNavPaneColumn.Width = new GridLength(0);
+                    PageCV.SecondaryNavPaneColumn.Width = new GridLength(0);
                     RootGridSecondaryPaneCol.Width = new GridLength(0);
 
                     Duration duration = new Duration(TimeSpan.FromMilliseconds(100));
                     DoubleAnimation doubleanimation = new DoubleAnimation(0, duration);
                     DoubleAnimation windowAnimation = new DoubleAnimation(this.Width - 185, duration);
 
-                    CVSecondaryNavPane.BeginAnimation(Rectangle.WidthProperty, doubleanimation);
+                    PageCV.CVSecondaryNavPane.BeginAnimation(Rectangle.WidthProperty, doubleanimation);
                     this.BeginAnimation(MainWindow.WidthProperty, windowAnimation);
                     AppBarSecondaryNavPane.BeginAnimation(Rectangle.WidthProperty, doubleanimation);
-                    SecondaryNavPaneStackPanel.BeginAnimation(StackPanel.WidthProperty, doubleanimation);
+                    PageCV.SecondaryNavPaneStackPanel.BeginAnimation(StackPanel.WidthProperty, doubleanimation);
 
                     OpenCvSecondaryPaneButtonIcon.Source = new BitmapImage(new Uri(@"icon/icons8-Forward.png", UriKind.Relative));
 
