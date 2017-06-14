@@ -121,7 +121,7 @@
                                   BorderThickness="1,0,1,1"
                                     Background="White"
                                   BorderBrush="#0078d7">
-                                <ContentPresenter Margin="4" />
+                                <ContentPresenter Margin="5" />
                                 <Border.Effect>
                                     <DropShadowEffect BlurRadius="5" Color="#c0c0c0" ShadowDepth="4"/>
                                 </Border.Effect>
@@ -391,7 +391,26 @@
         <ScrollViewer Grid.Column="0" Grid.Row="2" Background="#FFFFFFFF" VerticalScrollBarVisibility="Visible">
             <DockPanel>
                 <GroupBox DockPanel.Dock="Top" x:Name="PersonnalInfoGroupBox" FontFamily="Segoe UI" FontSize="18" Header="Informations Personnelles" Margin="10" >
-                    <TextBlock Text="Test"/>
+                    <StackPanel Orientation="Vertical">
+                        <TextBlock Text="Nom Prénom" FontSize="24" FontFamily="Segoe UI Light"/>
+                        <TextBox x:Name="NameTextBox" Margin="0,5,0,5"/>
+                        <TextBlock Text="Brève description de l'objectif du CV" FontSize="24" FontFamily="Segoe UI Light"/>
+                        <TextBox x:Name="DescriptionTextBox" Margin="0,5,0,5"/>
+                        <DockPanel>
+                            <StackPanel Orientation="Vertical" DockPanel.Dock="Left" Margin="0,0,10,0" Width="200" ClipToBounds="True">
+                                <TextBlock Text="Adresse mail" FontSize="24" FontFamily="Segoe UI Light"/>
+                                <TextBox x:Name="MailAddressTextBox" Margin="0,5,0,5"/>
+                            </StackPanel>
+                            <StackPanel Orientation="Vertical" DockPanel.Dock="Left" Margin="0,0,10,0" Width="400" ClipToBounds="True">
+                                <TextBlock Text="Adresse postale" FontSize="24" FontFamily="Segoe UI Light"/>
+                                <TextBox x:Name="PhysicalAddressTextBox" Margin="0,5,0,5"/>
+                            </StackPanel>
+                            <StackPanel Orientation="Vertical" DockPanel.Dock="Left" ClipToBounds="True">
+                                <TextBlock Text="Téléphone" FontSize="24" FontFamily="Segoe UI Light"/>
+                                <TextBox x:Name="PhoneTextBox" Margin="0,5,0,5"/>
+                            </StackPanel>
+                        </DockPanel>
+                    </StackPanel>
                 </GroupBox>
             </DockPanel>
         </ScrollViewer>
