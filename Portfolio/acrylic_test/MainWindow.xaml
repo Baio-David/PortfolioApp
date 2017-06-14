@@ -471,6 +471,7 @@
                         </Button>
                     </DockPanel>
                 </TabItem.Header>
+                
                 <controls:CVPageUC x:Name="PageCV" Margin="-2,-3,0,0"/>
             </TabItem>
             <TabItem x:Name="TabItemProjects" Background="#00000000" BorderBrush="Transparent" HorizontalAlignment="Left" Width="181">

@@ -20,6 +20,10 @@ namespace Portfolio.Pages
     /// </summary>
     public partial class CVPageUC : UserControl
     {
+        public static bool _newCvPageOpened = false;
+
+        private NewCvWindow _newCvPage = null;
+
         public CVPageUC()
         {
             InitializeComponent();
@@ -39,5 +43,23 @@ namespace Portfolio.Pages
             Line4.Y2 = FoCPECanvas.ActualHeight;
             Line5.Y2 = FoPrepCPECanvas.ActualHeight;
         }
+
+        private void OpenNewCvPageButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (!_newCvPageOpened)
+            {
+                _newCvPage = new NewCvWindow();
+                _newCvPage.Show();
+                _newCvPageOpened = true;
+            }
+            else
+            {
+                if(_newCvPage != null)
+                {
+                    _newCvPage.Focus();
+                }
+            }
+        }
+
     }
 }
