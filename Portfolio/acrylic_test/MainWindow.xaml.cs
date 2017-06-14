@@ -17,6 +17,7 @@ using System.Windows.Interop;
 using System.Windows.Media.Animation;
 using System.Threading;
 using Portfolio.Pages;
+using System.Diagnostics;
 
 namespace Portfolio
 {
@@ -75,6 +76,24 @@ namespace Portfolio
             InitializeComponent();
             SplashScreenVisual();
             
+        }
+
+        protected override void OnActivated(EventArgs e)
+        {
+            AppBarSecondaryNavPane.Fill = new SolidColorBrush(Color.FromArgb(77, 255, 255, 255));
+            PageCV.CVSecondaryNavPane.Fill = new SolidColorBrush(Color.FromArgb(77, 255, 255, 255));
+            TabItemCV.Background = new SolidColorBrush(Color.FromArgb(0, 0, 0, 0));
+            TabItemProjects.Background = new SolidColorBrush(Color.FromArgb(0, 0, 0, 0));
+            this.Background = new SolidColorBrush(Color.FromArgb(154, 255, 255, 255));
+        }
+
+        protected override void OnDeactivated(EventArgs e)
+        {
+            AppBarSecondaryNavPane.Fill = new SolidColorBrush(Color.FromArgb(255, 230, 230, 230));
+            PageCV.CVSecondaryNavPane.Fill = new SolidColorBrush(Color.FromArgb(255, 230, 230, 230));
+            TabItemCV.Background = new SolidColorBrush(Color.FromArgb(0, 0, 0, 0));
+            TabItemProjects.Background = new SolidColorBrush(Color.FromArgb(0, 0, 0, 0));
+            this.Background = new SolidColorBrush(Color.FromArgb(255, 255, 255, 255));
         }
 
         private void SplashScreenVisual()

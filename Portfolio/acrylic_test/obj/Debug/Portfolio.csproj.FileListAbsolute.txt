@@ -14,3 +14,6 @@ C:\Users\dbaio\Documents\Visual Studio 2013\Projects\Portfolio\acrylic_test\obj\
 C:\Users\dbaio\Documents\Visual Studio 2013\Projects\Portfolio\acrylic_test\obj\Debug\Portfolio.pdb
 C:\Users\dbaio\Documents\Visual Studio 2013\Projects\Portfolio\acrylic_test\obj\Debug\Pages\CVPageUC.baml
 C:\Users\dbaio\Documents\Visual Studio 2013\Projects\Portfolio\acrylic_test\obj\Debug\Pages\CVPageUC.g.cs
+C:\Users\dbaio\Documents\Visual Studio 2013\Projects\Portfolio\acrylic_test\obj\Debug\Portfolio.csprojResolveAssemblyReference.cache
+C:\Users\dbaio\Documents\Visual Studio 2013\Projects\Portfolio\acrylic_test\obj\Debug\NewCvWindow.baml
+C:\Users\dbaio\Documents\Visual Studio 2013\Projects\Portfolio\acrylic_test\obj\Debug\NewCvWindow.g.cs
